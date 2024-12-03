@@ -2,31 +2,31 @@
     // Use IntelliSense para saber los atributos posibles.
     // Mantenga el puntero para ver las descripciones de los existentes atributos.
     // Para más información, visite: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
+    "Version": "0.2.0",
+    "Configurations": [
 
         {
-            "name": "(gdb) Launch",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/tres_en_raya",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
+            "Name": "(gdb) Launch",
+            "Type": "cppdbg",
+            "Request": "launch",
+            "Program": "${workspaceFolder}/tres_en_raya",
+            "Args": [],
+            "StopAtEntry": false,
+            "Cwd": "${workspaceFolder}",
+            "Environment": [],
+            "ExternalConsole": false,
             "MIMode": "gdb",
-            "setupCommands": [
+            "SetupCommands": [
                 {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
+                    "Description": "Enable pretty-printing for gdb",
+                    "Text": "-enable-pretty-printing",
+                    "IgnoreFailures": true
                 }
             ],
-            "preLaunchTask": "build",
-            "miDebuggerPath": "/usr/bin/gdb",
-            "logging": {
-                "engineLogging": true
+            "PreLaunchTask": "build",
+            "MIDebuggerPath": "/usr/bin/gdb",
+            "Logging": {
+                "EngineLogging": true
             }
         }
     ]

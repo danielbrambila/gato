@@ -16,7 +16,7 @@ int main() {
     sf::Music musica;
     if (!musica.openFromFile("linkin_park.wav")) {
         std::cerr << "Error al cargar la música de fondo linkin_park.wav" << std::endl;
-        // Handle error more gracefully, e.g., continue without music
+        // Manejar el error de manera más adecuada, por ejemplo, continuar sin música
     } else {
         musica.setLoop(true); // Repetir la música en bucle
         musica.play();
@@ -25,18 +25,22 @@ int main() {
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
+            if (event.type == sf::Event::Closed) {
                 window.close();
+            }
 
             if (event.type == sf::Event::MouseButtonPressed) {
-                if (event.mouseButton.button == sf::Mouse::Left) {
-                    int row = event.mouseButton.y / 200;
-                    int col = event.mouseButton.x / 200;
-                    if (tablero.marcarCasilla(row, col, jugadorActual->getSimbolo())) {
-                        if (tablero.verificarVictoria(jugadorActual->getSimbolo())) {
-                            // Mostrar mensaje de victoria
-                            window.close();
-                        }
+                int x = event.mouseButton.x / 200;
+                int y = event.mouseButton.y / 200;
+
+                if (tablero.marcarCasilla(x, y, jugadorActual->getSimbolo())) {
+                    if (tablero.verificarVictoria(jugadorActual->getSimbolo())) {
+                        std::cout << "Jugador " << jugadorActual->getSimbolo() << " gana!" << std::endl;
+                        window.close();
+                    } else if (tablero.estaLleno()) {
+                        std::cout << "Empate!" << std::endl;
+                        window.close();
+                    } else {
                         jugadorActual = (jugadorActual == &jugador1) ? &jugador2 : &jugador1;
                     }
                 }
