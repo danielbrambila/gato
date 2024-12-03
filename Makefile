@@ -14,19 +14,19 @@ BIN_DIR = bin
 SRCS = $(wildcard $(SRC_DIR)/*.cpp)
 OBJS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRCS))
 
-# Bibliotecas SFML
-SFML_LIBS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+# Bibliotecas SDL2
+SDL2_LIBS = `sdl2-config --cflags --libs`
 
 # Reglas
 all: $(BIN_DIR)/$(TARGET)
 
 $(BIN_DIR)/$(TARGET): $(OBJS)
 	@mkdir -p $(BIN_DIR)
-	$(CXX) $(CXXFLAGS) -o $@ $^ $(SFML_LIBS)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(SDL2_LIBS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(OBJ_DIR)
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+	$(CXX) $(CXXFLAGS) -c -o $@ $< $(SDL2_LIBS)
 
 clean:
 	rm -rf $(OBJ_DIR) $(BIN_DIR)

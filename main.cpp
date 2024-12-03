@@ -1,56 +1,50 @@
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
+#include <SDL2/SDL.h>
 #include <iostream>
-#include "Jugador.hpp"
-#include "Tablero.hpp"
+
+const int SCREEN_WIDTH = 600;
+const int SCREEN_HEIGHT = 600;
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode(600, 600), "Tres en Raya");
-
-    Tablero tablero;
-    Jugador jugador1('X');
-    Jugador jugador2('O');
-    Jugador* jugadorActual = &jugador1;
-
-    // Cargar y reproducir la música de fondo
-    sf::Music musica;
-    if (!musica.openFromFile("linkin_park.wav")) {
-        std::cerr << "Error al cargar la música de fondo linkin_park.wav" << std::endl;
-        // Manejar el error de manera más adecuada, por ejemplo, continuar sin música
-    } else {
-        musica.setLoop(true); // Repetir la música en bucle
-        musica.play();
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        std::cerr << "Error al inicializar SDL: " << SDL_GetError() << std::endl;
+        return 1;
     }
 
-    while (window.isOpen()) {
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
-                window.close();
-            }
+    SDL_Window* window = SDL_CreateWindow("Tres en Raya", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    if (!window) {
+        std::cerr << "Error al crear la ventana: " << SDL_GetError() << std::endl;
+        SDL_Quit();
+        return 1;
+    }
 
-            if (event.type == sf::Event::MouseButtonPressed) {
-                int x = event.mouseButton.x / 200;
-                int y = event.mouseButton.y / 200;
+    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    if (!renderer) {
+        std::cerr << "Error al crear el renderer: " << SDL_GetError() << std::endl;
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return 1;
+    }
 
-                if (tablero.marcarCasilla(x, y, jugadorActual->getSimbolo())) {
-                    if (tablero.verificarVictoria(jugadorActual->getSimbolo())) {
-                        std::cout << "Jugador " << jugadorActual->getSimbolo() << " gana!" << std::endl;
-                        window.close();
-                    } else if (tablero.estaLleno()) {
-                        std::cout << "Empate!" << std::endl;
-                        window.close();
-                    } else {
-                        jugadorActual = (jugadorActual == &jugador1) ? &jugador2 : &jugador1;
-                    }
-                }
+    bool running = true;
+    SDL_Event event;
+    while (running) {
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                running = false;
             }
         }
 
-        window.clear();
-        tablero.dibujar(window);
-        window.display();
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        SDL_RenderClear(renderer);
+
+        // Aquí puedes agregar el código para dibujar el tablero y los símbolos
+
+        SDL_RenderPresent(renderer);
     }
+
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
 
     return 0;
 }
